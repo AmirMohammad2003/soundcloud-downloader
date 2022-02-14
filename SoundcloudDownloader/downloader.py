@@ -4,7 +4,7 @@ import os
 import requests
 import m3u8
 
-from .util import HttpClient, add_artwork_to_music
+from .util import HttpClient, add_metadata_to_music
 
 
 class SCDL:
@@ -68,10 +68,21 @@ class SCDL:
 
     def _parse_track_info(self, track_info):
         artist = "Unknown"
+        album = "Unknown Album"
         if "publisher_metadata" in track_info and track_info["publisher_metadata"]:
             artist = track_info["publisher_metadata"]["artist"]
+            if "album_title" in track_info["publisher_metadata"]:
+                album = track_info["publisher_metadata"]["album_title"]
+
         elif "user" in track_info and track_info["user"]:
             artist = track_info["user"]["username"]
+
+        year = "Unknown"
+        if "release_year" in track_info and track_info["release_year"]:
+            year = track_info["release_year"]
+
+        elif "release_date" in track_info and track_info["release_date"]:
+            year = track_info["release_date"].split('-', 1)[0]
 
         download_url, extension, protocol = \
             self._get_track_download_url_and_protocol(track_info)
@@ -82,7 +93,10 @@ class SCDL:
             'download_url': download_url,
             'extension': extension,
             'protocol': protocol,
-            'artwork_url': track_info['artwork_url']
+            'artwork_url': track_info['artwork_url'],
+            'genre': track_info['genre'],
+            'year': year,
+            'album': album,
         }
 
     def _get_filename(self, metadata):
@@ -131,4 +145,4 @@ class SCDL:
                         f.write(chunk)
 
         artwork = self.download_artwork(metadata, filename)
-        add_artwork_to_music(filename, artwork)
+        add_metadata_to_music(filename, artwork, metadata)

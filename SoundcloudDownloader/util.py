@@ -1,5 +1,5 @@
 from mutagen.mp3 import MP3
-from mutagen.id3 import ID3, APIC
+from mutagen.id3 import ID3, APIC, TIT2, TPE1, TDRC, TCON, TALB
 
 
 class HttpClient:
@@ -12,16 +12,20 @@ class HttpClient:
         return response.text, response.url
 
 
-def add_artwork_to_music(filename, artwork):
+def add_metadata_to_music(filename, artwork, metadata):
     audio = MP3(filename, ID3=ID3)
     audio.add_tags()
-    audio.tags.add(
-        APIC(
+    if artwork:
+        audio.tags.add(APIC(
             encoding=3,  # urf-8
             mime="image/jpeg",
             type=3,  # front cover
             desc=u'cover',
             data=artwork
-        )
-    )
+        ))
+    audio.tags["TIT2"] = TIT2(encoding=3, text=metadata['title'])
+    audio.tags["TPE1"] = TPE1(encoding=3, text=metadata['artist'])
+    audio.tags["TDRC"] = TDRC(encoding=3, text=metadata['year'])
+    audio.tags["TCON"] = TCON(encoding=3, text=metadata['genre'])
+    audio.tags["TALB"] = TALB(encoding=3, text=metadata['album'])
     audio.save()
