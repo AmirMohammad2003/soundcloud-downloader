@@ -129,8 +129,3 @@ class SCDL:
                 with open(filename, 'ab') as f:
                     for chunk in self.session_m3u8.get(segment.absolute_uri, stream=True):
                         f.write(chunk)
-
-
-if __name__ == '__main__':
-    scdl = SCDL()
-    scdl.download()
