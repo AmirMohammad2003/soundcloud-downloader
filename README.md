@@ -29,21 +29,19 @@ pip3 install -r requirements.txt
 on Windows:
 
 ```bash
-python .\main.py -u [MUSIC_URL]
+python .\main.py -u [MUSIC_URL] [optional [-d PATH_TO_DOWNLOAD]]
 ```
 
 or (if you have pylauncher installed)
 
 ```bash
-py .\main.py -u [MUSIC_URL]
+py .\main.py -u [MUSIC_URL] [optional [-d PATH_TO_DOWNLOAD]]
 ```
 
 on Linux:
 
 ```bash
-python3 ./main.py -u [MUSIC_URL]
+python3 ./main.py -u [MUSIC_URL] [optional [-d PATH_TO_DOWNLOAD]]
 ```
 
 ---
-
-> This project is for educational purposes only please buy subscriptions to support the artist.
