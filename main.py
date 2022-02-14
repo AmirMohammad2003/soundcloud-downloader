@@ -10,8 +10,9 @@ def main():
     parser = argparse.ArgumentParser(
         description="Download songs from Soundcloud."
     )
-    # TODO: Download Directory
-    # parser.add_argument('-d', '--directory', help='Directory to download to.')
+    parser.add_argument(
+        '-d', '--directory', help='Directory to download to.', required=False, default=None
+    )
     parser.add_argument('-u', '--url', help='Music url to download.')
     args = parser.parse_args()
 
@@ -20,7 +21,7 @@ def main():
         return
 
     scdl = SCDL()
-    scdl.download(args.url)
+    scdl.download(args.url, args.directory)
 
 
 if __name__ == "__main__":

@@ -1,3 +1,5 @@
+import re
+
 from mutagen.mp3 import MP3
 from mutagen.id3 import ID3, APIC, TIT2, TPE1, TDRC, TCON, TALB
 
@@ -10,6 +12,10 @@ class HttpClient:
     def download(self, url, timeout=None, headers={}, verify_ssl=True):
         response = self.session.get(url, timeout=timeout, headers=headers)
         return response.text, response.url
+
+
+def clean_filename(filename):
+    return re.sub(r'[\\/:*?"<>|]', '', filename)
 
 
 def add_metadata_to_music(filename, artwork, metadata):

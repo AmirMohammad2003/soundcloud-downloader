@@ -1,10 +1,11 @@
 import re
 import os
+from pathlib import Path
 
 import requests
 import m3u8
 
-from .util import HttpClient, add_metadata_to_music
+from .util import HttpClient, clean_filename, add_metadata_to_music
 
 
 class SCDL:
@@ -100,11 +101,12 @@ class SCDL:
         }
 
     def _get_filename(self, metadata):
-        return "{artist} - {title}.{ext}".format(
+        filename = "{artist} - {title}.{ext}".format(
             artist=metadata["artist"],
             title=metadata['title'],
             ext=metadata['extension']
         )
+        return clean_filename(filename)
 
     def download_artwork(self, metadata, filename):
         if metadata['artwork_url']:
@@ -114,7 +116,7 @@ class SCDL:
 
         return artwork
 
-    def download(self, track_url=None):
+    def download(self, track_url=None, _path=None):
         if track_url is None:
             raise ValueError("Track URL is required")
 
@@ -127,9 +129,15 @@ class SCDL:
 
         metadata = self._parse_track_info(track_info)
         filename = self._get_filename(metadata)
+        path = Path('.')
+        if _path is not None:
+            path = Path(_path) / filename
+
+        else:
+            path = path / filename
 
         if metadata['protocol'] == "direct" or metadata['protocol'] == "stream":
-            with open(filename, 'wb') as f:
+            with open(path, 'wb') as f:
                 for chunk in self.session.get(metadata['download_url'], stream=True):
                     f.write(chunk)
 
@@ -139,10 +147,10 @@ class SCDL:
                     metadata['download_url'],
                     http_client=HttpClient(self.session)
                 )
-            for segment in playlist.segments:
-                with open(filename, 'ab') as f:
+            with open(path.resolve(), 'wb') as f:
+                for segment in playlist.segments:
                     for chunk in self.session_m3u8.get(segment.absolute_uri, stream=True):
                         f.write(chunk)
 
         artwork = self.download_artwork(metadata, filename)
-        add_metadata_to_music(filename, artwork, metadata)
+        add_metadata_to_music(path.resolve(), artwork, metadata)
