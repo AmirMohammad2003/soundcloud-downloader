@@ -4,15 +4,7 @@ import os
 import requests
 import m3u8
 
-
-class HttpClient(object):
-
-    def __init__(self, session):
-        self.session = session
-
-    def download(self, url, timeout=None, headers={}, verify_ssl=True):
-        response = self.session.get(url, timeout=timeout, headers=headers)
-        return response.text, response.url
+from .util import HttpClient
 
 
 class SCDL:
