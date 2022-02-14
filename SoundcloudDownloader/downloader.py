@@ -94,12 +94,11 @@ class SCDL:
 
     def download_artwork(self, metadata, filename):
         if metadata['artwork_url']:
-            artwork_filename = os.path.splitext(filename)[0] + '.jpg'
-            with open(artwork_filename, 'wb') as f:
-                for chunk in self.session_m3u8.get(metadata['artwork_url'], stream=True):
-                    f.write(chunk)
+            artwork = b''
+            for chunk in self.session_m3u8.get(metadata['artwork_url'], stream=True):
+                artwork += chunk
 
-        return artwork_filename
+        return artwork
 
     def download(self, track_url=None):
         if track_url is None:
@@ -131,5 +130,5 @@ class SCDL:
                     for chunk in self.session_m3u8.get(segment.absolute_uri, stream=True):
                         f.write(chunk)
 
-        artwork_filename = self.download_artwork(metadata, filename)
-        add_artwork_to_music(filename, artwork_filename)
+        artwork = self.download_artwork(metadata, filename)
+        add_artwork_to_music(filename, artwork)
