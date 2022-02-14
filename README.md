@@ -24,7 +24,7 @@ on Linux:
 pip3 install -r requirements.txt
 ```
 
-4. download the music with this command:
+4. then you can download the music with this command:
 
 on Windows:
 
@@ -35,7 +35,7 @@ python .\main.py -u [MUSIC_URL]
 or (if you have pylauncher installed)
 
 ```bash
-py main.py -u [MUSIC_URL]
+py .\main.py -u [MUSIC_URL]
 ```
 
 on Linux:

@@ -4,7 +4,7 @@ import os
 import requests
 import m3u8
 
-from .util import HttpClient
+from .util import HttpClient, add_artwork_to_music
 
 
 class SCDL:
@@ -92,6 +92,15 @@ class SCDL:
             ext=metadata['extension']
         )
 
+    def download_artwork(self, metadata, filename):
+        if metadata['artwork_url']:
+            artwork_filename = os.path.splitext(filename)[0] + '.jpg'
+            with open(artwork_filename, 'wb') as f:
+                for chunk in self.session_m3u8.get(metadata['artwork_url'], stream=True):
+                    f.write(chunk)
+
+        return artwork_filename
+
     def download(self, track_url=None):
         if track_url is None:
             raise ValueError("Track URL is required")
@@ -121,3 +130,6 @@ class SCDL:
                 with open(filename, 'ab') as f:
                     for chunk in self.session_m3u8.get(segment.absolute_uri, stream=True):
                         f.write(chunk)
+
+        artwork_filename = self.download_artwork(metadata, filename)
+        add_artwork_to_music(filename, artwork_filename)

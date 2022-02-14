@@ -1,1 +1,1 @@
-from .scdl import SCDL
+from .downloader import SCDL
