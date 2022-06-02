@@ -129,12 +129,9 @@ class SCDL:
 
         metadata = self._parse_track_info(track_info)
         filename = self._get_filename(metadata)
-        path = Path('.')
+        path = Path('.') / filename
         if _path is not None:
             path = Path(_path) / filename
-
-        else:
-            path = path / filename
 
         if os.path.exists(path):
             raise FileExistsError('File already exists')
