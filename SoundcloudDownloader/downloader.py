@@ -139,7 +139,7 @@ class SCDL:
         if os.path.exists(path):
             raise FileExistsError('File already exists')
 
-        if metadata['protocol'] == "direct" or metadata['protocol'] == "stream":
+        if metadata['protocol'] in ("direct", "stream"):
             with open(path, 'wb') as f:
                 for chunk in self.session.get(metadata['download_url'], stream=True):
                     f.write(chunk)
