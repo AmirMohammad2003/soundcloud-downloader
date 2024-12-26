@@ -7,13 +7,15 @@ from SoundcloudDownloader import SCDL
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Download songs from Soundcloud."
-    )
+    parser = argparse.ArgumentParser(description="Download songs from Soundcloud.")
     parser.add_argument(
-        '-d', '--directory', help='Directory to download to.', required=False, default=None
+        "-d",
+        "--directory",
+        help="Directory to download to.",
+        required=False,
+        default=None,
     )
-    parser.add_argument('-u', '--url', help='Music url to download.')
+    parser.add_argument("-u", "--url", help="Music url to download.")
     args = parser.parse_args()
 
     if args.url is None:
@@ -21,7 +23,10 @@ def main():
         return
 
     scdl = SCDL()
-    scdl.download(args.url, args.directory)
+    try:
+        scdl.download(args.url, args.directory)
+    except Exception as e:
+        print("Something went wrong", e)
 
 
 if __name__ == "__main__":
