@@ -1,47 +1,27 @@
 # soundcloud-downloader
 
+## Description
+
+Soundcloud-downloader is a command-line tool that allows you to download songs from SoundCloud. (it does not work on Go+ songs.)
+
 ## Installation and Usage
 
-1. make sure you have python3 installed or in case you don't you can download it from python.org
+1. Ensure you have Python 3 installed.
 
-2. clone the repository, if you don't have git installed you can download the source code.
+2. Clone the repository or download the source code.
 
 ```bash
 git clone https://github.com/AmirMohammad2003/soundcloud-downloader.git
 ```
 
-3. install the requirements
-
-on Windows:
+3. Install the requirements:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-on Linux:
+4. Download music with the following command:
 
 ```bash
-pip3 install -r requirements.txt
+python main.py -u [MUSIC_URL] [-d PATH_TO_DOWNLOAD]
 ```
-
-4. then you can download the music with this command:
-
-on Windows:
-
-```bash
-python .\main.py -u [MUSIC_URL] [optional [-d PATH_TO_DOWNLOAD]]
-```
-
-or (if you have pylauncher installed)
-
-```bash
-py .\main.py -u [MUSIC_URL] [optional [-d PATH_TO_DOWNLOAD]]
-```
-
-on Linux:
-
-```bash
-python3 ./main.py -u [MUSIC_URL] [optional [-d PATH_TO_DOWNLOAD]]
-```
-
----
